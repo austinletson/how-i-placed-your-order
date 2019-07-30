@@ -29,6 +29,10 @@ import com.google.android.gms.location.LocationServices;
 import android.location.Location;
 import android.widget.Toast;
 
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -84,6 +88,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             // Permission has already been granted
         }
 
+        java.util.Date today = new java.util.Date();
+        Time time = new java.sql.Time(today.getTime());
+
+        Order order = new Order(Order.Orders.ONE, time, time);
+
 
         checkGooglePlayServices();
         buildGoogleApiClient();
@@ -97,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
+
 
     }
 
