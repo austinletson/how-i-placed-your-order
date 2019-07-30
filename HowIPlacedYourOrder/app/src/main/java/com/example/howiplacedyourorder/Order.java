@@ -19,7 +19,7 @@ class Order {
 
             con.setDoOutput(true);
             DataOutputStream out = new DataOutputStream(con.getOutputStream());
-            out.writeBytes(ParameterStringBuilder.getParamsString(parameters));
+            //out.writeBytes(ParameterStringBuilder.getParamsString(parameters));
             out.flush();
             out.close();
         } catch (Exception e) {
@@ -30,14 +30,21 @@ class Order {
 
     //The following are just a list of functions to implement and may be broken into other classes
 
-    public void checkOrder() {return null};
+    public void checkOrder() {
+    }
 
-    public void trackLocation() {return null};
+    public void trackLocation() {
+    }
 
-    public void cancelOrder() {return null};
+    public void cancelOrder() {
+    }
 
-    public void changeOrder() {return null};
+    public void changeOrder() {
+    }
 
-    public void timeTrigger() {return null};
+    public void timeTrigger() {
+    }
 
-    public void timeFrameTrigger {return null};
+    public void timeFrameTrigger() {}
+
+}
