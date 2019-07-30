@@ -12,6 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
                 String clickedItem=(String) list.getItemAtPosition(position);
             }
         });
+
+        java.util.Date today = new java.util.Date();
+        Time time = new java.sql.Time(today.getTime());
+
+        Order order = new Order(Order.Orders.ONE, time, time);
+
 
     }
 }
