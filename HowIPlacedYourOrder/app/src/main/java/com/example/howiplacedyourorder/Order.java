@@ -15,10 +15,10 @@ class Order {
         if (timeEnd.after(current) && timeStart.before(current)) {
             // start tracking
             return;
-        } else {
-            // trigger timer to start tracking
-            return;
         }
+        // trigger timer to start tracking
+
+
     }
 
     public String placeOrder() {

@@ -35,11 +35,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static int REQUEST_CODE_RECOVER_PLAY_SERVICES = 200;
 
-    private GoogleApiClient mGoogleApiClient;
+    public static GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     LocationRequest mLocationRequest;
 
@@ -97,6 +97,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         checkGooglePlayServices();
         buildGoogleApiClient();
         createLocationRequest();
+
+        final Intent intent = new Intent(this.getApplication(), LocationService.class);
+        startForegroundService(intent);
 
     }
 
@@ -169,8 +172,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             Toast.makeText(this, "Latitude:" + mLastLocation.getLatitude()+", Longitude:"+mLastLocation.getLongitude(),Toast.LENGTH_LONG).show();
 
         }
-
-        startLocationUpdates();
+        final Intent intent = new Intent(this.getApplication(), LocationService.class);
+        startService(intent);
 
     }
 
@@ -189,18 +192,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mLocationRequest.setInterval(5000);
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
-    protected void startLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        mLastLocation = location;
-        Toast.makeText(this, "Latitude:" + mLastLocation.getLatitude()+", Longitude:"+mLastLocation.getLongitude(),Toast.LENGTH_LONG).show();
-
     }
 
 }
