@@ -17,17 +17,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".AlarmService"
-            android:enabled="true"
-            android:exported="true"></service>
-
-        <receiver android:name=".Alarm" android:exported="true">
-            <intent-filter>
-                <action android:name="mypackage.START_ALARM" >
-                </action>
-            </intent-filter>
-        </receiver>
 
         <activity
             android:name=".MainActivity"

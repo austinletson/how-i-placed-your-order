@@ -26,8 +26,8 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
     private static final String LOGSERVICE = "#######";
-    private double slat = 33.779086;
-    private double slon = -84.387181;
+    private double slat = 33.778537;
+    private double slon = -84.388282;
 
     @Override
     public void onCreate() {
@@ -67,30 +67,39 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
     }
 
+    int count = 0;
+
     @Override
     public void onLocationChanged(Location location) {
 
         double lat = (double) location.getLatitude();
         double lon = (double) location.getLongitude();
         //Log.i(LOGSERVICE, "lat " + lat + ", lng: " + lon);
-        double currentDist = distance(lat, lon, slat, slon);
+        double currentDist = haversine(lat, lon, slat, slon);
+        currentDist = currentDist * 1000;
         Log.i(LOGSERVICE, "current distance: " + currentDist);
+        if (!(currentDist < 100)) {
+            try {
+                Thread.sleep(5 * 1000);
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+        } else if (count == 0){
+            new OrderAPI().execute();
+            count++;
+        }
     }
 
-    public static double distance(double lat1, double lat2, double lon1,
-                                  double lon2) {
+    public static final double R = 6372.8; // In kilometers
 
-        final int R = 6371; // Radius of the earth
-
-        double latDistance = Math.toRadians(lat2 - lat1);
-        double lonDistance = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = R * c * 1000; // convert to meters
-        distance = Math.pow(distance, 2);
-        return Math.sqrt(distance);
+    public static double haversine(double lat1, double lon1, double lat2, double lon2) {
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+        double a = Math.pow(Math.sin(dLat / 2),2) + Math.pow(Math.sin(dLon / 2),2) * Math.cos(lat1) * Math.cos(lat2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        return R * c;
     }
 
     @Override

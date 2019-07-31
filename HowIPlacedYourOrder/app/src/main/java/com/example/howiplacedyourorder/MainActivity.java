@@ -127,9 +127,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         checkGooglePlayServices();
         buildGoogleApiClient();
         createLocationRequest();
-
-        new OrderAPI().execute();
-
     }
 
 
