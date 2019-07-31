@@ -32,7 +32,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     @Override
     public void onCreate() {
         super.onCreate();
-add --a;        buildGoogleApiClient();
+        buildGoogleApiClient();
         Log.i(LOGSERVICE, "onCreate");
 
     }
