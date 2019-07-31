@@ -26,6 +26,8 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
     private static final String LOGSERVICE = "#######";
+    private double slat = 33.779086;
+    private double slon = -84.387181;
 
     @Override
     public void onCreate() {
@@ -67,9 +69,28 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.i(LOGSERVICE, "lat " + location.getLatitude());
-        Log.i(LOGSERVICE, "lng " + location.getLongitude());
 
+        double lat = (double) location.getLatitude();
+        double lon = (double) location.getLongitude();
+        //Log.i(LOGSERVICE, "lat " + lat + ", lng: " + lon);
+        double currentDist = distance(lat, lon, slat, slon);
+        Log.i(LOGSERVICE, "current distance: " + currentDist);
+    }
+
+    public static double distance(double lat1, double lat2, double lon1,
+                                  double lon2) {
+
+        final int R = 6371; // Radius of the earth
+
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c * 1000; // convert to meters
+        distance = Math.pow(distance, 2);
+        return Math.sqrt(distance);
     }
 
     @Override
