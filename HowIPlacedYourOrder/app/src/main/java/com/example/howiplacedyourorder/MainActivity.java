@@ -38,6 +38,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static int REQUEST_CODE_RECOVER_PLAY_SERVICES = 200;
+    private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
 
     public static GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
@@ -61,6 +62,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 String clickedItem=(String) list.getItemAtPosition(position);
             }
         });
+
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSION_ACCESS_COARSE_LOCATION);
+        }
 
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,
@@ -165,6 +170,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onConnected(Bundle bundle) {
 
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSION_ACCESS_COARSE_LOCATION);
+        }
+
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
         if (mLastLocation != null) {
@@ -193,5 +202,4 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
-
 }
