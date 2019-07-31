@@ -37,6 +37,12 @@ import com.google.android.gms.location.LocationServices;
 import android.location.Location;
 import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -113,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         buildGoogleApiClient();
         createLocationRequest();
 
+        new OrderAPI().execute();
 
     }
 
@@ -123,10 +130,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
+        //Intent intent = new Intent(this, LocationService.class);
+        //startForegroundService(intent);
         Intent intent = new Intent(this, LocationService.class);
         PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
         AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, 100 * 60, 100 * 60, pintent);
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, 100 * 6, 100 * 6, pintent);
     }
 
     private boolean checkGooglePlayServices() {
@@ -212,5 +221,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mLocationRequest.setInterval(5000);
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    protected void makeAPIcall() {
+        String urlString = "https://gateway-staging.ncrcloud.com/order/orders";
+        String data = "{\"details\":[\"ApplicationKey\",\"null\",\"identifier\"],\"errorType\":\"com.ncr.nep.common.exception.ResourceDoesNotExistException\",\"message\":\"The ApplicationKey resource with the identifier 'null' does not exist.\",\"statusCode\":404}";
+        OutputStream out = null;
+
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            out = new BufferedOutputStream(urlConnection.getOutputStream());
+
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+            writer.write(data);
+            writer.flush();
+            writer.close();
+            out.close();
+
+            urlConnection.connect();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
