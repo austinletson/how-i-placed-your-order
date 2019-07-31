@@ -135,7 +135,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         Intent intent = new Intent(this, LocationService.class);
         PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
         AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, 100 * 6, 100 * 6, pintent);
+        alarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() +
+                        60 * 1000, pintent);
     }
 
     private boolean checkGooglePlayServices() {
@@ -201,8 +203,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             Toast.makeText(this, "Latitude:" + mLastLocation.getLatitude()+", Longitude:"+mLastLocation.getLongitude(),Toast.LENGTH_LONG).show();
 
         }
-        final Intent intent = new Intent(this.getApplication(), LocationService.class);
-        startService(intent);
+        //final Intent intent = new Intent(this.getApplication(), LocationService.class);
+        //startService(intent);
 
     }
 
