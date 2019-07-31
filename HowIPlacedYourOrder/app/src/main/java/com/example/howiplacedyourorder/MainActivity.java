@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //fusedLocationClient = getFusedLocationProviderClient(this);
         setContentView(R.layout.activity_main);
         final ListView list = findViewById(R.id.menuListView);
         ArrayList<String> arrayList = new ArrayList<>();
