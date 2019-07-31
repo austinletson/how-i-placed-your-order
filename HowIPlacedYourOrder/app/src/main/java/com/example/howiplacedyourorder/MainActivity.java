@@ -35,6 +35,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import android.location.Location;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.BufferedOutputStream;
@@ -48,6 +49,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -58,11 +60,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private Location mLastLocation;
     LocationRequest mLocationRequest;
 
+    private TimePicker timePicker1;
+    private TimePicker timePicker2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //fusedLocationClient = getFusedLocationProviderClient(this);
         setContentView(R.layout.activity_main);
+
+
+        timePicker1 = findViewById(R.id.simpleTimePickerStart);
+
+        timePicker2 = findViewById(R.id.simpleTimePickerEnd);
         final ListView list = findViewById(R.id.menuListView);
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("Coffee");
@@ -132,12 +141,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
         //Intent intent = new Intent(this, LocationService.class);
         //startForegroundService(intent);
-        Intent intent = new Intent(this, LocationService.class);
-        PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
-        AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() +
-                        60 * 1000, pintent);
     }
 
     private boolean checkGooglePlayServices() {
@@ -200,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 mGoogleApiClient);
         if (mLastLocation != null) {
 
-            Toast.makeText(this, "Latitude:" + mLastLocation.getLatitude()+", Longitude:"+mLastLocation.getLongitude(),Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Latitude:" + mLastLocation.getLatitude()+", Longitude:"+mLastLocation.getLongitude(),Toast.LENGTH_LONG).show();
 
         }
         //final Intent intent = new Intent(this.getApplication(), LocationService.class);
@@ -223,6 +226,28 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mLocationRequest.setInterval(5000);
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    public void orderButtonPressed(View view) {
+
+        System.out.println();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, timePicker1.getHour());
+        calendar.set(Calendar.MINUTE, timePicker1.getMinute());
+
+
+
+        Intent intent = new Intent(this, LocationService.class);
+        PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
+        AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarm.setExact(AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(), pintent);
+
+        System.out.println();
+
+
     }
 
     protected void makeAPIcall() {

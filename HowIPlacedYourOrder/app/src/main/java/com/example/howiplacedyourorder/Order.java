@@ -22,22 +22,7 @@ class Order {
     }
 
     public String placeOrder() {
-        try {
-            URL url = new URL("gateway-staging.ncrcloud.com/order/orders");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
 
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("param1", "val");
-
-            con.setDoOutput(true);
-            DataOutputStream out = new DataOutputStream(con.getOutputStream());
-            //out.writeBytes(ParameterStringBuilder.getParamsString(parameters));
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            return "Failure";
-        }
         return "Success";
     }
 
