@@ -113,8 +113,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         buildGoogleApiClient();
         createLocationRequest();
 
-        final Intent intent = new Intent(this.getApplication(), LocationService.class);
-        startForegroundService(intent);
 
     }
 
@@ -125,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
-        Intent intent = new Intent(this, AlarmService.class);
+        Intent intent = new Intent(this, LocationService.class);
         PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
         AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarm.setRepeating(AlarmManager.RTC_WAKEUP, 100 * 60, 100 * 60, pintent);
