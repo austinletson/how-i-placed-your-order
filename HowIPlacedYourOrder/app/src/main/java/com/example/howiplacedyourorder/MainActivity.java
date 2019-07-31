@@ -83,7 +83,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String clickedItem=(String) list.getItemAtPosition(position);
+                OrderAPI.orderType=(String) list.getItemAtPosition(position);
+
             }
         });
 
@@ -226,6 +227,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void orderButtonPressed(View view) {
+
+        Context context = getApplicationContext();
+        CharSequence text = "Thank you for placing your order";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+
 
         System.out.println();
 
