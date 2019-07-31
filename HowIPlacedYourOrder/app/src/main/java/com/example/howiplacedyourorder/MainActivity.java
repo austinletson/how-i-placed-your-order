@@ -1,10 +1,17 @@
 package com.example.howiplacedyourorder;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -16,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -94,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             // Permission has already been granted
         }
 
+
         java.util.Date today = new java.util.Date();
         Time time = new java.sql.Time(today.getTime());
 
@@ -109,14 +118,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
-
-
+        Intent intent = new Intent(this, AlarmService.class);
+        PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
+        AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, 100 * 60, 100 * 60, pintent);
     }
 
     private boolean checkGooglePlayServices() {
