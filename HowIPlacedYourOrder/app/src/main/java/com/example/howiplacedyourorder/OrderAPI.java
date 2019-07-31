@@ -44,7 +44,6 @@ public class OrderAPI extends AsyncTask<String, String, String> {
             urlConnection.setRequestProperty("nep-application-key", "8a0389b96bff8ba8016c4553d826007d");
             urlConnection.setRequestProperty("nep-enterprise-unit", "7e15b6051a2748109a40444d9dd726da");
             urlConnection.setRequestProperty("nep-organization", "how-i-placed-your-order");
-            urlConnection.setRequestProperty("Test id", "Walking into Cheetah");
             //urlConnection.setRequestProperty("Content-Length", "" + data.getBytes().length);
 
             out = new BufferedOutputStream(urlConnection.getOutputStream());

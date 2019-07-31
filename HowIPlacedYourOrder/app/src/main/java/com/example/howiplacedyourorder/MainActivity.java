@@ -118,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         checkGooglePlayServices();
         buildGoogleApiClient();
         createLocationRequest();
-
     }
 
 
@@ -199,8 +198,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             Toast.makeText(this, "Latitude:" + mLastLocation.getLatitude()+", Longitude:"+mLastLocation.getLongitude(),Toast.LENGTH_LONG).show();
 
         }
-        final Intent intent = new Intent(this.getApplication(), LocationService.class);
-        startService(intent);
+        //final Intent intent = new Intent(this.getApplication(), LocationService.class);
+        //startService(intent);
 
     }
 
